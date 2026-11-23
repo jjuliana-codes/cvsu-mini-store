@@ -1,184 +1,138 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+/* ---------- Design tokens (shared with ProductCard.css) ---------- */
+:root {
+  --navy-950: #071632;
+  --navy-900: #0a1f44;
+  --navy-700: #12326b;
+  --navy-600: #1b4390;
+  --accent: #f5b50a;
+  --bg: #f1f4fa;
+  --surface: #ffffff;
+  --text: #0f1b33;
+  --muted: #5b6780;
+  --border: #dde3ef;
+  --ok: #15803d;
+  --bad: #b42318;
+  --radius: 12px;
+  --shadow-sm: 0 1px 2px rgba(10, 31, 68, 0.06), 0 4px 14px rgba(10, 31, 68, 0.06);
+  --shadow-md: 0 10px 24px rgba(10, 31, 68, 0.16);
+  --content-width: 1100px;
+  color-scheme: light;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+/* ---------- Reset (also overrides the Vite starter styles) ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-#center {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
+html,
+body {
   width: 100%;
+  margin: 0;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+body {
+  display: block;
+  min-width: 320px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* ---------- Layout ---------- */
+.app {
+  min-height: 100vh;
+}
+
+.app-header,
+.cart-message,
+.product-grid {
+  /* the header spans full width; the other two share one centered column */
+  margin-inline: auto;
+}
+
+.cart-message,
+.product-grid {
+  width: min(var(--content-width), 100% - 32px);
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  padding: 40px 16px 36px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-700) 60%, var(--navy-600) 100%);
+  border-bottom: 4px solid var(--accent);
+}
+
+.app-header h1 {
+  margin: 0;
+  color: #ffffff; /* explicit, so no leftover global h1 rule can turn it black */
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+}
+
+.app-header p {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* ---------- Cart message ---------- */
+.cart-message {
+  margin-top: 24px;
+  margin-bottom: 28px;
+  padding: 16px 20px;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--navy-600);
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cart-count {
+  display: inline-block;
+  min-width: 28px;
+  margin: 0 12px 0 6px;
+  padding: 1px 9px;
+  color: #ffffff;
+  background: var(--navy-700);
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-last {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ---------- Product grid ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 22px;
+  padding-bottom: 56px;
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 28px 16px 24px;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+  .cart-message {
+    padding: 14px 16px;
   }
 }
